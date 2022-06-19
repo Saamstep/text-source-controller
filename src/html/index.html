@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Overlay Control</title>
+    <meta name="author" content="Sam" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        background-color: black;
+      }
+      label {
+        color: white;
+        font-weight: bold;
+        padding: 5px;
+        text-align: center;
+        font-family: "Open Sans", sans-serif;
+        font-size: 50px;
+      }
+      input {
+        font-family: "Open Sans", sans-serif;
+        font-size: 50px;
+      }
+    </style>
+    <script>
+      function updateFields() {
+        fetch("http://localhost:3000/text").then(async function (resp) {
+          let data = await resp.json();
+
+          data.files.forEach((field) => {
+            document.getElementById(field.id).defaultValue = field.value;
+          });
+        });
+      }
+    </script>
+  </head>
+  <body onload="updateFields()">
+    <form action="/update">
+      <label for="redName">Red Side Name</label>
+      <input type="text" id="redName" name="redName" value="" /><br />
+      <label for="redScore">Red Side Score </label>
+      <input type="number" id="redScore" name="redScore" value="" /><br />
+      <label for="blueName">Blue Side Name</label>
+      <input type="text" id="blueName" name="blueName" value="" /><br />
+      <label for="blueScore">Blue Side Score</label>
+      <input type="number" id="blueScore" name="blueScore" value="" /><br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
