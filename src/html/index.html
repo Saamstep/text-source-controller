@@ -15,14 +15,61 @@
       label {
         color: white;
         font-weight: bold;
-        padding: 5px;
-        text-align: center;
         font-family: "Open Sans", sans-serif;
-        font-size: 50px;
+        font-size: 20px;
+        /* display: block; */
+        float: center;
+        text-align: left;
+        /* width: 400px; */
+        line-height: 50px;
+        margin-bottom: 10px;
+        margin-left: 10px;
       }
-      input {
+      input[type="number"],
+      input[type="text"] {
         font-family: "Open Sans", sans-serif;
-        font-size: 50px;
+        font-size: 20px;
+        flex: 0 0 200px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+      }
+      input[type="button"],
+      input[type="submit"],
+      input[type="reset"], .button-disp {
+        background-color: #ffffff;
+        color: black;
+        font-family: "Open Sans", sans-serif;
+        font-weight: bold;
+        border: none;
+        padding: 8px 10px;
+        font-size: 15px;
+        margin-top: 10px;
+        width: 15%;
+        cursor: pointer;
+      }
+
+      .center {
+        margin: auto;
+        width: 50%;
+        padding: 0px;
+      }
+
+      .buttons {
+        text-align: center;
+      }
+
+      .button-plus {
+        border: none;
+        background-color: white;
+        padding: 8px 10px;
+        margin-left: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        font-weight: bold;
+        /* margin: 4px 2px; */
+        cursor: pointer;
       }
     </style>
     <script>
@@ -35,19 +82,45 @@
           });
         });
       }
+
+      function resetScore() {
+        console.log("hello");
+      }
+
+      function swapSides() {}
     </script>
   </head>
   <body onload="updateFields()">
-    <form action="/update">
-      <label for="redName">Red Side Name</label>
-      <input type="text" id="redName" name="redName" value="" /><br />
-      <label for="redScore">Red Side Score </label>
-      <input type="number" id="redScore" name="redScore" value="" /><br />
-      <label for="blueName">Blue Side Name</label>
-      <input type="text" id="blueName" name="blueName" value="" /><br />
-      <label for="blueScore">Blue Side Score</label>
-      <input type="number" id="blueScore" name="blueScore" value="" /><br />
-      <input type="submit" value="Submit" />
-    </form>
+    <div>
+      <form action="/update">
+        <div style="margin-left: 1px">
+          <label for="blueName" style="color: #0063e6">Blue Name</label>
+          <input type="text" id="blueName" name="blueName" autocomplete="off" />
+       
+          <label for="blueScore" style="color: #0063e6">Blue Score&nbsp</label>
+          <input type="number" id="blueScore" name="blueScore" size="2" autocomplete="off" /> 
+        </div>
+        <div style="margin-top: 0px">
+          <label for="redName" style="color: #e73050">Red Name&nbsp</label>
+          <input type="text" id="redName" name="redName" autocomplete="off" />
+        
+          <label for="redScore" style="color: #e73050">Red Score&nbsp&nbsp</label>
+          <input type="number" id="redScore" name="redScore" size="2" autocomplete="off" /> 
+          
+        
+          <div class="buttons">
+            <input type="submit" value="Update" />
+          </div>
+        </div>
+      </form>
+      <div class="buttons" style="margin-top: 10px;">
+        <a href="/blue/plus" ><button class="button-plus" style="color:#0063e6">+</button></a>
+        <a href="/red/plus" ><button class="button-plus" style="color:#e73050">+</button></a>
+      </div>
+      <div class="buttons">
+        <a href="/reset" ><button class="button-disp"" />Reset</button></a>
+        <a href="/swap" ><button class="button-disp"" />Swap</button></a>
+      </div>
+    </div>
   </body>
 </html>
