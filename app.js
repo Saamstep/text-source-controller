@@ -1,13 +1,32 @@
 const express = require("express");
-const fs = require("node-fs").promises;
+const fs = require("node-fs");
 const path = require("path");
 const app = express();
+const osenv = require("os");
 app.use(express.json());
 
 /* Options */
 const port = 3000;
-const textPath = "text/";
+const textPath = `${osenv.homedir()}\\OVERLAY_TEXT`;
+console.log(`TEXT PATH = ${textPath}`);
 const home = "/";
+
+fs.access(path.join(textPath), fs.constants.W_OK, function (e) {
+  if (e) {
+    console.log(`Directory not found... Creating new directory in ${path.join(textPath)}`);
+    fs.mkdir(path.join(textPath), function (e) {
+      if (e) console.error(e);
+    });
+    const filesToWrite = ["blueName", "blueScore", "redName", "redScore", "talent1", "talent2"];
+    for (f in filesToWrite) {
+      fs.writeFile(path.join(textPath, `${filesToWrite[f]}.txt`), "", function (err) {
+        if (err) return console.error(err);
+      });
+    }
+  } else {
+    console.log("Directory found!");
+  }
+});
 
 app.get(home, (req, res) => {
   res.sendFile(path.join(__dirname, "src/index.html"));
@@ -27,18 +46,18 @@ app.get("/script.js", (req, res) => {
 
 app.get("/update", async (req, res) => {
   for (const prop in req.query) {
-    fs.writeFile(path.join(__dirname, textPath, prop + ".txt"), `${req.query[prop]}`, (err) => {
-      if (err) return;
+    fs.writeFile(path.join(textPath, prop + ".txt"), `${req.query[prop]}`, (err) => {
+      if (err) console.error(err);
     });
   }
   res.redirect(home);
 });
 
 app.get("/reset", async (req, res) => {
-  fs.writeFile(path.join(__dirname, textPath, "redScore" + ".txt"), `0`, (err) => {
+  fs.writeFile(path.join(textPath, "redScore" + ".txt"), `0`, (err) => {
     if (err) console.error(err);
   });
-  fs.writeFile(path.join(__dirname, textPath, "blueScore" + ".txt"), `0`, (err) => {
+  fs.writeFile(path.join(textPath, "blueScore" + ".txt"), `0`, (err) => {
     if (err) console.error(err);
   });
   res.redirect(home);
@@ -46,22 +65,22 @@ app.get("/reset", async (req, res) => {
 
 app.get("/swap", async (req, res) => {
   let d = {};
-  let files = await fs.readdir(path.join(__dirname, textPath));
+  let files = await fs.readdir(path.join(textPath));
   for (let i = 0; i < files.length; ++i) {
-    let content = await fs.readFile(path.join(__dirname, textPath, files[i]), "utf-8");
+    let content = await fs.readFile(path.join(textPath, files[i]), "utf-8");
     d[files[i].split(".")[0]] = content;
   }
 
-  fs.writeFile(path.join(__dirname, textPath, "redScore" + ".txt"), `${d.blueScore}`, (err) => {
+  fs.writeFile(path.join(textPath, "redScore" + ".txt"), `${d.blueScore}`, (err) => {
     if (err) console.error(err);
   });
-  fs.writeFile(path.join(__dirname, textPath, "blueScore" + ".txt"), `${d.redScore}`, (err) => {
+  fs.writeFile(path.join(textPath, "blueScore" + ".txt"), `${d.redScore}`, (err) => {
     if (err) console.error(err);
   });
-  fs.writeFile(path.join(__dirname, textPath, "blueName" + ".txt"), `${d.redName}`, (err) => {
+  fs.writeFile(path.join(textPath, "blueName" + ".txt"), `${d.redName}`, (err) => {
     if (err) console.error(err);
   });
-  fs.writeFile(path.join(__dirname, textPath, "redName" + ".txt"), `${d.blueName}`, (err) => {
+  fs.writeFile(path.join(textPath, "redName" + ".txt"), `${d.blueName}`, (err) => {
     if (err) console.error(err);
   });
 
@@ -69,20 +88,20 @@ app.get("/swap", async (req, res) => {
 });
 
 app.get("/red/plus", async (req, res) => {
-  const score = await fs.readFile(path.join(__dirname, textPath, "redScore" + ".txt"));
+  const score = await fs.readFile(path.join(textPath, "redScore" + ".txt"));
   let value = Number(score);
   value = parseInt(value + 1);
-  fs.writeFile(path.join(__dirname, textPath, "redScore" + ".txt"), `${value}`, (err) => {
+  fs.writeFile(path.join(textPath, "redScore" + ".txt"), `${value}`, (err) => {
     if (err) console.error(err);
   });
   res.redirect(home);
 });
 
 app.get("/blue/plus", async (req, res) => {
-  const score = await fs.readFile(path.join(__dirname, textPath, "blueScore" + ".txt"));
+  const score = await fs.readFile(path.join(textPath, "blueScore" + ".txt"));
   let value = Number(score);
   value = parseInt(value + 1);
-  fs.writeFile(path.join(__dirname, textPath, "blueScore" + ".txt"), `${value}`, (err) => {
+  fs.writeFile(path.join(textPath, "blueScore" + ".txt"), `${value}`, (err) => {
     if (err) console.error(err);
   });
   res.redirect(home);
@@ -90,9 +109,13 @@ app.get("/blue/plus", async (req, res) => {
 
 app.get("/text", async (req, res) => {
   let response = [];
-  let files = await fs.readdir(path.join(__dirname, textPath));
+  console.log(path.join(textPath));
+  let files = fs.readdirSync(textPath, "utf-8", function (err) {
+    if (err) console.error(err);
+  });
+
   for (let i = 0; i < files.length; ++i) {
-    let content = await fs.readFile(path.join(__dirname, textPath, files[i]), "utf-8");
+    let content = fs.readFile(path.join(textPath, files[i]), "utf-8");
     response.push({ id: files[i].split(".")[0], value: content });
   }
 
