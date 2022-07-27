@@ -1,0 +1,56 @@
+body {
+  background-color: black;
+}
+
+label {
+  color: white;
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+  max-lines: 1;
+}
+
+input[type="number"],
+input[type="text"] {
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button-disp {
+  background-color: #ffffff;
+  color: black;
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+  border: 0;
+}
+
+.button-plus {
+  border: none;
+  background-color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  /* margin: 10px; */
+  padding: 5px;
+}
+
+.center {
+  margin: auto;
+  width: 50ch;
+  padding: 0px;
+}
+
+.margin-button {
+  margin-top: 15px;
+}
+
+.center-buttons {
+  text-align: center;
+}

@@ -1,9 +1,5 @@
 const express = require("express");
 const fs = require("node-fs").promises;
-// import express from "express";
-// import fs from "node-fs";
-// import fetch from "node-fetch";
-// import path from "path";
 const path = require("path");
 const app = express();
 app.use(express.json());
@@ -14,13 +10,25 @@ const textPath = "text/";
 const home = "/";
 
 app.get(home, (req, res) => {
-  res.sendFile(path.join(__dirname, "src/html/index.html"));
+  res.sendFile(path.join(__dirname, "src/index.html"));
+});
+
+app.get("/talent", (req, res) => {
+  res.sendFile(path.join(__dirname, "src/talent.html"));
+});
+
+app.get("/style.css", (req, res) => {
+  res.sendFile(path.join(__dirname, "src/style.css"));
+});
+
+app.get("/script.js", (req, res) => {
+  res.sendFile(path.join(__dirname, "src/script.js"));
 });
 
 app.get("/update", async (req, res) => {
   for (const prop in req.query) {
     fs.writeFile(path.join(__dirname, textPath, prop + ".txt"), `${req.query[prop]}`, (err) => {
-      if (err) console.error(err);
+      if (err) return;
     });
   }
   res.redirect(home);
