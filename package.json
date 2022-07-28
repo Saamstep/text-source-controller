@@ -5,6 +5,7 @@
   "bin": "app.js",
   "main": "app.js",
   "scripts": {
+    "test": "node app.js",
     "dev": "nodemon app.js"
   },
   "author": "Sam",
