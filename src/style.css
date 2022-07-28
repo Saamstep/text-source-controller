@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background-color: #1f1e1f;
 }
 
 label {
@@ -48,7 +48,7 @@ input[type="reset"],
 }
 
 .margin-button {
-  margin-top: 15px;
+  margin-top: 5px;
 }
 
 .center-buttons {

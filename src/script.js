@@ -4,6 +4,7 @@ function updateFields() {
 
     data.files.forEach((field) => {
       if (document.getElementById(field.id)) {
+        console.log(field.id + " :: " + field.value);
         document.getElementById(field.id).defaultValue = field.value;
       }
     });
